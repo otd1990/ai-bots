@@ -48,17 +48,18 @@ const data = ref({
 const currentMessage = ref('')
 
 const sendMessage = async () => {
-  data.value.chatMessages.push({ sender: 'User123', text: data.value.newMessage })
+  const question = data.value.newMessage
+  data.value.newMessage = ''
+  data.value.chatMessages.push({ sender: 'User123', text: question })
+
   try {
     const response = await fetch('http://localhost:3010/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ message: data.value.newMessage }) // Update the key to 'message'
+      body: JSON.stringify({ message: question }) // Update the key to 'message'
     })
-
-    data.value.newMessage = ''
 
     const result = await response.json()
     const chatGPTResponse = result.text // Adjust the property based on your server response structure
@@ -77,7 +78,7 @@ const sendMessage = async () => {
 }
 
 p {
-  margin: 1rem 0;
+  margin-bottom: 0.75rem;
 }
 
 .chatbot__container {

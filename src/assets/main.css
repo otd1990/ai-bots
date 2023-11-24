@@ -8,30 +8,7 @@ body {
   color: #272829;
   background: hsla(0, 0%, 95%, 1);
   /* https://coolors.co/gradient-maker/f1f1f1-ccdccf-f4d999?position=0,65,100&opacity=100,100,100&type=linear&rotation=130 */
-  background: hsla(0, 0%, 95%, 1);
-
-  background: linear-gradient(
-    50deg,
-    hsla(0, 0%, 95%, 1) 0%,
-    hsla(131, 19%, 83%, 1) 72%,
-    hsla(42, 81%, 78%, 1) 100%
-  );
-
-  background: -moz-linear-gradient(
-    50deg,
-    hsla(0, 0%, 95%, 1) 0%,
-    hsla(131, 19%, 83%, 1) 72%,
-    hsla(42, 81%, 78%, 1) 100%
-  );
-
-  background: -webkit-linear-gradient(
-    50deg,
-    hsla(0, 0%, 95%, 1) 0%,
-    hsla(131, 19%, 83%, 1) 72%,
-    hsla(42, 81%, 78%, 1) 100%
-  );
-
-  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#F1F1F1", endColorstr="#CCDCCF", GradientType=1 );
+  background: #f3f3f3;
 }
 
 #app {

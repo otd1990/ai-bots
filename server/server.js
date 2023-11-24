@@ -5,6 +5,7 @@ import cors from 'cors' // Import the cors middleware
 import 'dotenv/config'
 
 import { openai } from './openai.js'
+import { moviesData } from './moviesData.js'
 import { Document } from 'langchain/document'
 import { MemoryVectorStore } from 'langchain/vectorstores/memory'
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
@@ -19,8 +20,7 @@ const newMessage = async (history, message) => {
   const result = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
     messages: [...history, message],
-    temperature: 2,
-    max_tokens: 20
+    max_tokens: 2000
   })
 
   return result.choices[0].message
@@ -48,44 +48,6 @@ const chat = async (req, res) => {
   await start(req.body.message) // Use await to ensure asynchronous completion
 }
 
-const moviesData = [
-  {
-    id: 1,
-    title: 'Stepbrother',
-    description: `Comedic journey full of adult humor and awkwardness.`
-  },
-  {
-    id: 2,
-    title: 'The Matrix',
-    description: `Deals with alternate realities and questioning what's real.`
-  },
-  {
-    id: 3,
-    title: 'Shutter Island',
-    description: `A mind-bending plot with twists and turns.`
-  },
-  {
-    id: 4,
-    title: 'Memento',
-    description: `A non-linear narrative that challenges the viewer's perception.`
-  },
-  {
-    id: 5,
-    title: 'Doctor Strange',
-    description: `Features alternate dimensions and reality manipulation.`
-  },
-  {
-    id: 6,
-    title: 'Paw Patrol',
-    description: `Children's animated movie where a group of adorable puppies save people from all sorts of emergencies.`
-  },
-  {
-    id: 7,
-    title: 'Interstellar',
-    description: `Features futuristic space travel with high stakes`
-  }
-]
-
 const createStore = (q) =>
   MemoryVectorStore.fromDocuments(
     moviesData.map(
@@ -99,16 +61,15 @@ const createStore = (q) =>
   )
 
 const movies = async (req, res) => {
-  console.log("In movies query ", req.body, " count ", 1);
   try {
     const store = await createStore(req.body.query)
-    const { query } = req.body; // Extract the query from the request body
-    const count = req.body.count ? req.body.count : 1;
-    const result = await store.similaritySearch(query, count); // Assuming search is a function that searches for movies
-    res.json(result);
+    const { query } = req.body // Extract the query from the request body
+    const count = req.body.count ? req.body.count : 1
+    const result = await store.similaritySearch(query, count) // Assuming search is a function that searches for movies
+    res.json(result)
   } catch (error) {
-    console.error('Error searching for movies:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Error searching for movies:', error)
+    res.status(500).json({ error: 'Internal Server Error' })
   }
 }
 
